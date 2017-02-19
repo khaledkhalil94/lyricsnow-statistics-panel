@@ -5,7 +5,7 @@ import App from './App'
 import Error from './components/errors/'
 import Msgs from './components/messages/'
 import VueRouter from 'vue-router'
-import store from './store'
+import store from './store/'
 
 Vue.use(VueRouter)
 
