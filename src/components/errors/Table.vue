@@ -27,12 +27,15 @@
 
 <script>
   import axios from 'axios'
+  import { mapActions } from 'vuex'
 
   export default {
     data () {
-      return { rows: [], rowsDisplay: [] }
+      return {
+        rows: []
+      }
     },
-    props: ['searchValue', 'handleCount'],
+    props: ['searchValue'],
     created: function () {
       axios.get('http://localhost:1334/server/controller/stats.php', {
         params: {
@@ -41,11 +44,24 @@
       }).then(res => {
         let data = res.data
         this.rows.push(...data)
+        this.setCount(Math.ceil(data.length/this.getDisplayCount))
       }).catch(res => {
         console.log(res)
       })
     },
+    computed: {
+      getDisplayCount () {
+        return this.$store.state.displayCount
+      },
+      getDisplayOffset () {
+        return this.$store.state.displayOffset
+      },
+      rowsDisplay () {
+        return this.rows.slice(this.getDisplayOffset, this.getDisplayCount+this.getDisplayOffset)
+      }
+    },
     methods: {
+      ...mapActions (['setCount']),
       sortBy (n, e) {
         const ths = [...document.getElementsByTagName('th')]
         const isDsc = n.className.substring(7) === 'descending'
@@ -60,10 +76,6 @@
       }
     },
     watch: {
-      rows: function (a){
-        this.rowsDisplay = a.slice(0, 5)
-        this.handleCount(a)
-      },
       searchValue: function(a) {
         this.rowsDisplay = this.rows.filter(row => row.username.toLowerCase().indexOf(a.toLowerCase()) !== -1)
       }

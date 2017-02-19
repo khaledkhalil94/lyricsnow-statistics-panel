@@ -3,8 +3,8 @@
     <vHead :val="getValue"></vHead>
     <div id="appBody" class="ui container">
       <Stats></Stats>
-      <vTable :searchValue="searchValue" :handleCount="handleCount"></vTable>
-      <Pagination :count="count"></Pagination>
+      <vTable :searchValue="searchValue"></vTable>
+      <Pagination></Pagination>
     </div>
   </div>
 </template>
@@ -21,16 +21,12 @@ export default {
   },
   data (){
     return {
-      searchValue: '',
-      count: 3
+      searchValue: ''
     }
   },
   methods: {
     getValue(val){
       this.searchValue = val
-    },
-    handleCount(count){
-      this.count = Math.ceil(count.length/10)
     }
   }
 }

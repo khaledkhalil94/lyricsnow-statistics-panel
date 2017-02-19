@@ -1,6 +1,10 @@
 <template lang="html">
   <div class="ui pagination menu">
-    <a class="item" v-for="(item, i) in pages">
+    <a
+    class="item"
+    :class="{active: currentPage === i+1}"
+    @click="changePagPage(i)"
+    v-for="(item, i) in pages">
       {{ i+1 }}
     </a>
   </div>
@@ -8,29 +12,16 @@
 
 <script>
   import axios from 'axios'
+  import { mapActions } from 'vuex'
+
   export default {
-    data () {
-      return {
-        pagess: 6
-      }
-    },
-    props: ['count'],
-    created: function () {
-      console.log(this.$store)
-      axios.get('http://localhost:1334/server/controller/stats.php', {
-        params: {
-          action: 'notfoundCount'
-        }
-      }).then(res => {
-        let data = res.data
-        this.pages = Math.ceil(data/10)
-      }).catch(res => {
-        console.log(res)
-      })
-    },
-    computed:{
+    methods: mapActions (['changePagPage']),
+    computed: {
       pages() {
-        return 3
+        return this.$store.state.paginationCount
+      },
+      currentPage () {
+        return this.$store.state.paginationPage
       }
     }
   }
