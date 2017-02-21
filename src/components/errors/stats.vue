@@ -21,6 +21,7 @@
 
 <script>
 import axios from 'axios'
+import { HOST } from '../../utils/config'
 
 export default {
   data() {
@@ -30,7 +31,7 @@ export default {
     }
   },
   created: function () {
-    axios.get('http://localhost:1334/server/controller/stats.php', {
+    axios.get(HOST + '/server/controller/stats.php', {
       params: {
         action: 'sources'
       }

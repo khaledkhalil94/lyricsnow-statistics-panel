@@ -5,6 +5,9 @@ const mutations = {
   changePaginationPage(state, page){
     state.paginationPage = page + 1
     state.displayOffset = page * state.displayCount
+  },
+  setOriginalRows(state, rows){
+    state.originalRows = rows
   }
 }
 

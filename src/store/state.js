@@ -1,4 +1,5 @@
 const state = {
+  originalRows: [],
   paginationCount: 0,
   displayCount: 10,
   paginationPage: 1,

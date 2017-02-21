@@ -28,3 +28,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .ui.top.menu {
+    min-height: 50px;
+  }
+</style>

@@ -11,13 +11,12 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import { mapActions } from 'vuex'
 
   export default {
     methods: mapActions (['changePagPage']),
     computed: {
-      pages() {
+      pages () {
         return this.$store.state.paginationCount
       },
       currentPage () {

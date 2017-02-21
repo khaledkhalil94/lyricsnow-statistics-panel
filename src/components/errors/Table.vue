@@ -18,7 +18,7 @@
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td>{{ row.artist }}</td>
         <td>{{ row.track }}</td>
-        <td>{{ row.date }}</td>
+        <td>{{ row.date }} <MakeDate :date="row.date" /></td>
         <td>{{ row.count }}</td>
       </tr>
     </tbody>
@@ -27,41 +27,53 @@
 
 <script>
   import axios from 'axios'
-  import { mapActions } from 'vuex'
+  import moment from 'moment'
+  import { mapActions, mapState } from 'vuex'
+  import MakeDate from '../date'
+  import { HOST } from '../../utils/config'
 
   export default {
+    components: {
+      MakeDate
+    },
     data () {
       return {
-        rows: []
+        rows: [],
+        moment
       }
     },
     props: ['searchValue'],
     created: function () {
-      axios.get('http://localhost:1334/server/controller/stats.php', {
+      axios.get(HOST + '/server/controller/stats.php', {
         params: {
           action: 'errorsData'
         }
       }).then(res => {
         let data = res.data
         this.rows.push(...data)
-        this.setCount(Math.ceil(data.length/this.getDisplayCount))
+        this.setRows(data)
       }).catch(res => {
         console.log(res)
       })
     },
     computed: {
+      ...mapState({
+        originalRows: state => state.originalRows,
+        displayCount: state => state.displayCount,
+        displayOffset: state => state.displayOffset
+      }),
       getDisplayCount () {
-        return this.$store.state.displayCount
+        return this.displayCount
       },
       getDisplayOffset () {
-        return this.$store.state.displayOffset
+        return this.displayOffset
       },
       rowsDisplay () {
         return this.rows.slice(this.getDisplayOffset, this.getDisplayCount+this.getDisplayOffset)
       }
     },
     methods: {
-      ...mapActions (['setCount']),
+      ...mapActions (['setCount', 'setRows']),
       sortBy (n, e) {
         const ths = [...document.getElementsByTagName('th')]
         const isDsc = n.className.substring(7) === 'descending'
@@ -73,11 +85,14 @@
         else this.rows.sort((a, b) => a[e].toLowerCase() > b[e].toLowerCase() ? 1 : a[e].toLowerCase() < b[e].toLowerCase() ? -1 : 0)
 
         if(isDsc) this.rows.reverse()
-      }
+      },
     },
     watch: {
       searchValue: function(a) {
-        this.rowsDisplay = this.rows.filter(row => row.username.toLowerCase().indexOf(a.toLowerCase()) !== -1)
+        this.rows = this.originalRows.filter(row => row.username.toLowerCase().indexOf(a.toLowerCase()) !== -1)
+      },
+      rows: function (x) {
+        this.setCount(Math.ceil(x.length/this.getDisplayCount))
       }
     }
   }
