@@ -1,19 +1,19 @@
 <template lang="html">
-  <div class="ui sortable red selectable celled table">
+  <div class="ui sortable red padded large selectable celled table">
     <thead>
       <tr>
         <th>#</th>
-        <th @click="(e) => sortBy(e.target, 'username')">Username</th>
-        <th @click="(e) => sortBy(e.target, 'artist')">Message</th>
-        <th @click="(e) => sortBy(e.target, 'date')">Date</th>
+        <th>Username</th>
+        <th>Message</th>
+        <th>Date</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(row, i) in rows">
-        <td class='collapsing'>{{ i }}</td>
-        <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
-        <td>{{ row.artist }}</td>
-        <td>{{ row.date }}</td>
+        <td class='collapsing'>{{ i+1 }}</td>
+        <td><a :href="'http://www.last.fm/user/' + row.name">{{ row.name }}</a></td>
+        <td>{{ row.message }}</td>
+        <td>{{ row.date }} <MakeDate :date="row.date" /></td>
       </tr>
     </tbody>
   </div>
@@ -21,13 +21,19 @@
 
 <script>
   import axios from 'axios'
+  import { HOST } from '../../utils/config'
+  import MakeDate from '../../utils/date'
+  import moment from 'moment'
 
   export default {
+    components: {
+      MakeDate
+    },
     data () {
-      return { rows: [] }
+      return { rows: [], moment }
     },
     created: function () {
-      axios.get('http://localhost:1334/server/controller/stats.php', {
+      axios.get(HOST + '/server/controller/stats.php', {
         params: {
           action: 'getMessages'
         }

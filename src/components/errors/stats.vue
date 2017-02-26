@@ -20,29 +20,29 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { HOST } from '../../utils/config'
+  import axios from 'axios'
+  import { HOST } from '../../utils/config'
 
-export default {
-  data() {
-    return {
-      not_found: 0,
-      sources: [],
-    }
-  },
-  created: function () {
-    axios.get(HOST + '/server/controller/stats.php', {
-      params: {
-        action: 'sources'
+  export default {
+    data() {
+      return {
+        not_found: 0,
+        sources: [],
       }
-    }).then(res => {
-      let data = res.data
-      this.not_found = data.nf
-      delete data.nf
-      this.sources = data
-    }).catch(res => {
-      console.log(res)
-    })
-  },
-}
+    },
+    created: function () {
+      axios.get(HOST + '/server/controller/stats.php', {
+        params: {
+          action: 'sources'
+        }
+      }).then(res => {
+        let data = res.data
+        this.not_found = data.nf
+        delete data.nf
+        this.sources = data
+      }).catch(res => {
+        console.log(res)
+      })
+    },
+  }
 </script>

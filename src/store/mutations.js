@@ -8,6 +8,19 @@ const mutations = {
   },
   setOriginalRows(state, rows){
     state.originalRows = rows
+  },
+  setLogin(state, login){
+    state.logged = login
+  },
+  setErrMsg(state, msg){
+    state.errMsg = msg
+  },
+  logout(state){
+    state.logged = false
+    state.errMsg = null
+  },
+  updateRows(state, newRows){
+    state.originalRows = newRows
   }
 }
 

@@ -1,4 +1,6 @@
 const state = {
+  logged: false,
+  errMsg: null,
   originalRows: [],
   paginationCount: 0,
   displayCount: 10,

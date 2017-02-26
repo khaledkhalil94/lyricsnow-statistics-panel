@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import Error from './components/errors/'
+import login from './components/login'
 import Msgs from './components/messages/'
 import VueRouter from 'vue-router'
 import store from './store/'
@@ -16,7 +17,14 @@ const router = new VueRouter({
     { path: '/', component: App, name: 'stats' },
     { path: '/errors', component: Error, name: 'err' },
     { path: '/msgs', component: Msgs, name: 'msgs' },
+    { path: '/login', component: login, name: 'login' }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  if(to.path === '/login') next()
+  const { logged } = store.state
+  logged ? next() : next('/login')
 })
 
 /* eslint-disable no-new */

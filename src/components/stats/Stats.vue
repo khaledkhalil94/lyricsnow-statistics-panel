@@ -28,30 +28,30 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { HOST } from '../utils/config'
+  import axios from 'axios'
+  import { HOST } from '../../utils/config'
 
-export default {
-  data() {
-    return {
-      totalPlays: 0,
-      myPlays: 0,
-      messages: 0
-    }
-  },
-  created: function () {
-    axios.get(HOST + '/server/controller/stats.php', {
-      params: {
-        action: 'stats'
+  export default {
+    data() {
+      return {
+        totalPlays: 0,
+        myPlays: 0,
+        messages: 0
       }
-    }).then(res => {
-      let data = res.data
-      this.totalPlays = data.totalPlays
-      this.myPlays = data.myPlays
-      this.messages = data.messages
-    }).catch(res => {
-      console.log(res)
-    })
-  },
-}
+    },
+    created: function () {
+      axios.get(HOST + '/server/controller/stats.php', {
+        params: {
+          action: 'stats'
+        }
+      }).then(res => {
+        let data = res.data
+        this.totalPlays = data.totalPlays
+        this.myPlays = data.myPlays
+        this.messages = data.messages
+      }).catch(res => {
+        console.log(res)
+      })
+    },
+  }
 </script>

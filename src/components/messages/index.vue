@@ -17,9 +17,3 @@ export default {
   }
 }
 </script>
-
-<style media="screen">
-  .ui.container {
-    width: 90%;
-  }
-</style>

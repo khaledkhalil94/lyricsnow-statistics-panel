@@ -11,22 +11,32 @@
         </div>
       </div>
     </div>
+    <a class="item right" @click="logout">Log out</a>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'header',
-  data () {
-    return { value: '' }
-  },
-  props: ['val'],
-  watch: {
-    value: function (a) {
-      this.val(a)
+  import { mapActions } from 'vuex'
+
+  export default {
+    name: 'header',
+    data () {
+      return { value: '' }
+    },
+    props: ['val'],
+    watch: {
+      value: function (a) {
+        this.val(a)
+      }
+    },
+    methods: {
+      ...mapActions (['setLogout']),
+      logout (){
+        this.setLogout()
+        this.$router.push({'path': '/login'})
+      }
     }
   }
-}
 </script>
 
 <style scoped>

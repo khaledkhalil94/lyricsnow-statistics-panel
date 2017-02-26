@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="ui sortable red selectable celled table">
+  <div class="ui sortable red padded selectable celled table">
     <thead>
       <tr>
         <th>#</th>
@@ -13,8 +13,8 @@
     </thead>
     <tbody>
       <tr v-for="(row, i) in rowsDisplay">
-        <td class='collapsing'>{{ i }}</td>
-        <td class='collapsing'><i class='ui icon black link remove'></i></td>
+        <td class='collapsing'>{{ i+1 }}</td>
+        <td class='collapsing'><i @click="removeItem(row.id)" class='ui icon black link remove'></i></td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td>{{ row.artist }}</td>
         <td>{{ row.track }}</td>
@@ -29,7 +29,7 @@
   import axios from 'axios'
   import moment from 'moment'
   import { mapActions, mapState } from 'vuex'
-  import MakeDate from '../date'
+  import MakeDate from '../../utils/date'
   import { HOST } from '../../utils/config'
 
   export default {
@@ -73,7 +73,27 @@
       }
     },
     methods: {
-      ...mapActions (['setCount', 'setRows']),
+      ...mapActions (['setCount', 'setRows', 'updateRows']),
+      removeItem(id){
+        const URL = HOST + '/server/controller/delete.php'
+        const body = JSON.stringify({
+          action: 'deleteRecord',
+          id
+        })
+        const req = new Request(URL, {
+          method: 'POST',
+          body: body,
+        })
+
+        fetch(req)
+          .then(res => res.json())
+          .then(res => {
+            if(res.status === true) {
+              this.updateRows({artist: res.artist, track: res.track})
+            }
+          })
+          .catch(res => console.log(res))
+      },
       sortBy (n, e) {
         const ths = [...document.getElementsByTagName('th')]
         const isDsc = n.className.substring(7) === 'descending'

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import vBody from './components/Body'
+import vBody from './components/stats/'
 import vHead from './components/Header'
 
 export default {
