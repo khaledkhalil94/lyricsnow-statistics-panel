@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="ui sortable red padded large selectable celled table">
+  <div class="ui sortable red padded selectable celled table">
     <thead>
       <tr>
         <th>#</th>

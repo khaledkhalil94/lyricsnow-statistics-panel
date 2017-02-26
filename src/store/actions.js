@@ -5,6 +5,7 @@ const actions = {
   changePagPage: ({commit}, page) => commit('changePaginationPage', page),
   setRows: ({commit}, rows) => commit('setOriginalRows', rows),
   setLogout: ({commit}) => commit('logout'),
+  updateState: ({commit}) => commit('updateState'),
 
   updateRows: ({commit, state}, {artist, track}) => {
     const newArr = state.originalRows.filter((item) => item.artist !== artist && item.track !== track)

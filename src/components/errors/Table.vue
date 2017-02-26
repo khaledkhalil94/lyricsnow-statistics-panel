@@ -3,23 +3,23 @@
     <thead>
       <tr>
         <th>#</th>
-        <th class="collapsing"></th>
         <th @click="(e) => sortBy(e.target, 'username')">Username</th>
         <th @click="(e) => sortBy(e.target, 'artist')">Artist</th>
         <th @click="(e) => sortBy(e.target, 'track')">Title</th>
         <th @click="(e) => sortBy(e.target, 'date')">Date</th>
         <th @click="(e) => sortBy(e.target, 'count')">Count</th>
+        <th class="collapsing" v-if="enableDelete"></th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(row, i) in rowsDisplay">
         <td class='collapsing'>{{ i+1 }}</td>
-        <td class='collapsing'><i @click="removeItem(row.id)" class='ui icon black link remove'></i></td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td>{{ row.artist }}</td>
         <td>{{ row.track }}</td>
         <td>{{ row.date }} <MakeDate :date="row.date" /></td>
         <td>{{ row.count }}</td>
+        <td class='collapsing' v-if="enableDelete"><i @click="removeItem(row.id)" class='ui icon black link remove'></i></td>
       </tr>
     </tbody>
   </div>
@@ -60,6 +60,7 @@
       ...mapState({
         originalRows: state => state.originalRows,
         displayCount: state => state.displayCount,
+        enableDelete: state => state.enableDelete,
         displayOffset: state => state.displayOffset
       }),
       getDisplayCount () {
@@ -89,7 +90,7 @@
           .then(res => res.json())
           .then(res => {
             if(res.status === true) {
-              this.updateRows({artist: res.artist, track: res.track})
+              this.rows = this.rows.filter(i => !(i.track === res.track && i.artist === res.artist))
             }
           })
           .catch(res => console.log(res))

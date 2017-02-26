@@ -5,7 +5,8 @@ const state = {
   paginationCount: 0,
   displayCount: 10,
   paginationPage: 1,
-  displayOffset: 0
+  displayOffset: 0,
+  enableDelete: false
 }
 
 export default state

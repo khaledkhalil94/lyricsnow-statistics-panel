@@ -21,6 +21,9 @@ const mutations = {
   },
   updateRows(state, newRows){
     state.originalRows = newRows
+  },
+  updateState(state){
+    state.enableDelete = !state.enableDelete
   }
 }
 

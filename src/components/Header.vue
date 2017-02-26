@@ -11,26 +11,39 @@
         </div>
       </div>
     </div>
-    <a class="item right" @click="logout">Log out</a>
+    <div class="right menu" v-if="this.$route.name === 'err'">
+      <div class="item">
+        <div class="ui toggle checkbox">
+          <input type="checkbox" name="public" v-model="toggle">
+          <label>Enable delete</label>
+        </div>
+      </div>
+      <a class="item right" @click="logout">Log out</a>
+    </div>
+    <a class="item right" v-else @click="logout">Log out</a>
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapState } from 'vuex'
 
   export default {
     name: 'header',
     data () {
-      return { value: '' }
+      return { value: '', toggle: this.togg }
     },
     props: ['val'],
     watch: {
       value: function (a) {
         this.val(a)
+      },
+      toggle: function(x) {
+        this.updateState()
       }
     },
+    computed: mapState({togg: state => state.enableDelete }),
     methods: {
-      ...mapActions (['setLogout']),
+      ...mapActions (['setLogout', 'updateState']),
       logout (){
         this.setLogout()
         this.$router.push({'path': '/login'})
