@@ -15,8 +15,8 @@
       <tr v-for="(row, i) in rowsDisplay">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
-        <td>{{ row.artist }}</td>
-        <td>{{ row.track }}</td>
+        <td v-html="row.artist"></td>
+        <td v-html="row.track"></td>
         <td>{{ row.date }} <MakeDate :date="row.date" /></td>
         <td>{{ row.count }}</td>
         <td class='collapsing' v-if="enableDelete"><i @click="removeItem(row.id)" class='ui icon black link remove'></i></td>
