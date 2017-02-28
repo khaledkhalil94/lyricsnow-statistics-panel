@@ -33,7 +33,7 @@
       return { rows: [], moment }
     },
     created: function () {
-      axios.get(HOST + '/server/controller/stats.php', {
+      axios.get(HOST + '/controller/stats.php', {
         params: {
           action: 'getMessages'
         }

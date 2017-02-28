@@ -1,1 +1,1 @@
-export const HOST = process.env.NODE_ENV === 'development' ? 'http://localhost:1334' : 'http://lyricsnow.us'
+export const HOST = process.env.NODE_ENV === 'development' ? 'http://localhost:1334/server' : 'http://lyricsnow.us/server'

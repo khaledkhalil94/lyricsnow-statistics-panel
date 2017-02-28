@@ -44,7 +44,7 @@
     },
     props: ['searchValue'],
     created: function () {
-      axios.get(HOST + '/server/controller/stats.php', {
+      axios.get(HOST + '/controller/stats.php', {
         params: {
           action: 'errorsData'
         }
@@ -76,7 +76,7 @@
     methods: {
       ...mapActions (['setCount', 'setRows', 'updateRows']),
       removeItem(id){
-        const URL = HOST + '/server/controller/delete.php'
+        const URL = HOST + '/controller/delete.php'
         const body = JSON.stringify({
           action: 'deleteRecord',
           id

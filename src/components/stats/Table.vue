@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr v-for="(row, i) in rowsDisplay">
-        <td class='collapsing'>{{ i }}</td>
+        <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td v-if="row.first_play !== '0000-00-00 00:00:00'">{{ row.first_play }} <MakeDate :date="row.first_play" /></td>
         <td v-else>-</td>
@@ -39,7 +39,7 @@
       return { rows: [], rowsDisplay: [], moment }
     },
     created: function () {
-      axios.get(HOST + '/server/controller/stats.php', {
+      axios.get(HOST + '/controller/stats.php', {
         params: {
           action: 'tableData'
         }

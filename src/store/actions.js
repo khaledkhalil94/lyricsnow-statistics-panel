@@ -14,7 +14,7 @@ const actions = {
   },
 
   setLogin({commit}, form) {
-    const URL = HOST + '/server/controller/login.php'
+    const URL = HOST + '/controller/login.php'
     const myRequest = new Request(URL, {
       method: 'POST',
       body: new FormData(form)

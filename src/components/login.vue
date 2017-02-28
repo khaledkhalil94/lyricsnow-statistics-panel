@@ -35,12 +35,10 @@
         password: ''
       }
     },
-    computed: {
-      ...mapState({
+    computed: mapState({
         logged: state => state.logged,
         errMsg: state => state.errMsg
       }),
-    },
     methods: {
       ...mapActions (['setLogin']),
       handleLogin (e) {
