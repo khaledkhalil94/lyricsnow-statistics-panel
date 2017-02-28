@@ -1,5 +1,11 @@
 <template lang="html">
   <div class="ui top menu">
+    <a href="/">
+      <div class="item">
+        <img id="header_img" src="../assets/favicon.png">
+      </div>
+    </a>
+    <a href='/' class="item">Lyrics Now</a>
     <router-link class="item" active-class='active' to="/" exact>Stats</router-link>
     <router-link class="item" active-class='active' to="/errors">Errors</router-link>
     <router-link class="item" active-class='active' to="/msgs">Messages</router-link>
@@ -55,5 +61,9 @@
 <style scoped>
   .ui.top.menu {
     min-height: 50px;
+  }
+  #header_img {
+    width: 22px;
+    height: auto;
   }
 </style>
