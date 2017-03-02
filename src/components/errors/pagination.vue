@@ -1,27 +1,47 @@
 <template lang="html">
-  <div class="ui pagination menu">
-    <a
-    class="item"
-    :class="{active: currentPage === i+1}"
-    @click="changePagPage(i)"
-    v-for="(item, i) in pages">
-      {{ i+1 }}
-    </a>
+  <div class="pagination">
+    <button class="ui icon button blue" :class="{disabled: currentPage <= 1}" @click="setPage('first')">
+      <i class="angle double left icon"></i>
+    </button>
+    <div class="ui buttons">
+      <button class="ui icon button blue" :class="{disabled: currentPage <= 1}" @click="setPage('prev')">
+        <i class="angle left icon"></i>
+      </button>
+      <div class="or" :data-text="currentPage"></div>
+      <button class="ui icon button blue" :class="{disabled: currentPage >= pages}" @click="setPage('next')">
+        <i class="angle right icon"></i>
+      </button>
+    </div>
+    <button class="ui icon button blue" :class="{disabled: currentPage >= pages}" @click="setPage('last')">
+      <i class="angle double right icon"></i>
+    </button>
   </div>
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapState } from 'vuex'
 
   export default {
-    methods: mapActions (['changePagPage']),
-    computed: {
-      pages () {
-        return this.$store.state.paginationCount
-      },
-      currentPage () {
-        return this.$store.state.paginationPage
+    computed: mapState({
+      pages: state => state.paginationCount,
+      currentPage: state => state.paginationPage
+    }),
+    methods: {
+      ...mapActions (['changePagPage']),
+      setPage (page) {
+        switch (page) {
+          case 'first': this.changePagPage(0); break
+          case 'prev': this.changePagPage(this.currentPage - 2); break
+          case 'next': this.changePagPage(this.currentPage); break
+          case 'last': this.changePagPage(this.pages - 1); break
+        }
       }
     }
   }
 </script>
+
+<style scoped>
+  button.icon {
+    margin: 0 1px;
+  }
+</style>
