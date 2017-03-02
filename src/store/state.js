@@ -3,7 +3,7 @@ const state = {
   errMsg: null,
   originalRows: [],
   paginationCount: 0,
-  displayCount: 10,
+  displayCount: 15,
   paginationPage: 1,
   displayOffset: 0,
   enableDelete: false
