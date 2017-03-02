@@ -1,11 +1,11 @@
 <template lang="html">
-  <div class="ui sortable red padded selectable celled table">
+  <div class="ui sortable red selectable celled table">
     <thead>
       <tr>
         <th>#</th>
         <th @click="(e) => sortBy(e.target, 'username')">Username</th>
         <th @click="(e) => sortBy(e.target, 'first_play')">First Play</th>
-        <th @click="(e) => sortBy(e.target, 'last_play')">Last Play</th>
+        <th @click="(e) => sortBy(e.target, 'last_play')" id="last_play">Last Play</th>
         <th @click="(e) => sortBy(e.target, 'count')">Plays</th>
         <th @click="(e) => sortBy(e.target, 'nf_count')">Not Found</th>
       </tr>
@@ -14,9 +14,9 @@
       <tr v-for="(row, i) in rowsDisplay">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
-        <td v-if="row.first_play !== '0000-00-00 00:00:00'">{{ row.first_play }} <MakeDate :date="row.first_play" /></td>
+        <td v-if="row.first_play !== '0000-00-00 00:00:00'"><MakeDate :date="row.first_play" /></td>
         <td v-else>-</td>
-        <td v-if="row.last_play !== '0000-00-00 00:00:00'">{{ row.last_play }} <MakeDate :date="row.last_play" /></td>
+        <td v-if="row.last_play !== '0000-00-00 00:00:00'"><MakeDate :date="row.last_play" /></td>
         <td v-else>-</td>
         <td>{{ row.count }}</td>
         <td>{{ row.nf_count }}</td>
@@ -27,9 +27,8 @@
 
 <script>
   import axios from 'axios'
-  import MakeDate from '../../utils/date'
   import moment from 'moment'
-  import { HOST } from '../../utils/config'
+  import { sortDate, HOST, MakeDate } from '../../utils/'
 
   export default {
     components: {
@@ -46,6 +45,7 @@
       }).then(res => {
         let data = res.data
         this.rows.push(...data)
+        document.getElementById('last_play').click()
       }).catch(res => {
         console.log(res)
       })
@@ -60,9 +60,8 @@
 
         if (['count', 'nf_count'].indexOf(e) !== -1) {
           this.rows.sort((a, b) => a[e] - b[e]).reverse()
-        } else if (['first_play', 'last_play'].indexOf(e) !== -1) {
-          this.rows.sort((a, b) => a[e].toLowerCase() > b[e].toLowerCase()).reverse()
-        } else this.rows.sort((a, b) => a[e].toLowerCase() > b[e].toLowerCase())
+        } else if (['first_play', 'last_play'].indexOf(e) !== -1) sortDate(this.rows, e)
+         else this.rows.sort((a, b) => a[e].toLowerCase() > b[e].toLowerCase() ? 1 : a[e].toLowerCase() < b[e].toLowerCase() ? -1 : 0)
 
         if(isDsc) this.rows.reverse()
       }

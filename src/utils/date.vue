@@ -1,6 +1,6 @@
 <template lang="html">
-  <span class="relateive-date">
-    ({{ makeDate(date) }})
+  <span class="relateive-date" :title="date">
+    {{ makeDate(date) }}
   </span>
 </template>
 
@@ -8,6 +8,7 @@
 import moment from 'moment'
 
 export default {
+  name: 'MakeDate',
   props: ['date'],
   data (){
     return {

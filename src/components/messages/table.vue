@@ -13,7 +13,7 @@
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.name">{{ row.name }}</a></td>
         <td>{{ row.message }}</td>
-        <td>{{ row.date }} <MakeDate :date="row.date" /></td>
+        <td><MakeDate :date="row.date" /></td>
       </tr>
     </tbody>
   </div>

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="ui sortable red padded selectable celled table">
+  <div class="ui sortable red selectable celled table">
     <thead>
       <tr>
         <th>#</th>
@@ -15,9 +15,9 @@
       <tr v-for="(row, i) in rowsDisplay">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
-        <td v-html="row.artist"></td>
+        <td><a :href="'http://www.last.fm/music/' + row.artist" v-html="row.artist">{{ row.artist }}</a></td>
         <td v-html="row.track"></td>
-        <td>{{ row.date }} <MakeDate :date="row.date" /></td>
+        <td><MakeDate :date="row.date" /></td>
         <td>{{ row.count }}</td>
         <td class='collapsing' v-if="enableDelete"><i @click="removeItem(row.id)" class='ui icon black link remove'></i></td>
       </tr>
@@ -29,8 +29,7 @@
   import axios from 'axios'
   import moment from 'moment'
   import { mapActions, mapState } from 'vuex'
-  import MakeDate from '../../utils/date'
-  import { HOST } from '../../utils/config'
+  import { sortDate, HOST, MakeDate } from '../../utils/'
 
   export default {
     components: {
@@ -101,7 +100,7 @@
         ths.forEach((e) => e.className = 'sort')
         n.className = isDsc ? 'sorted ascending' : 'sorted descending'
 
-        if (e === 'date') this.rows.sort((a, b) => new Date(a[e]) - new Date(b[e])).reverse()
+        if (e === 'date') sortDate(this.rows, e)
         else if (e === 'count') this.rows.sort((a, b) => a.count - b.count).reverse()
         else this.rows.sort((a, b) => a[e].toLowerCase() > b[e].toLowerCase() ? 1 : a[e].toLowerCase() < b[e].toLowerCase() ? -1 : 0)
 
