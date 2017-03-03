@@ -44,4 +44,7 @@
   button.icon {
     margin: 0 1px;
   }
+  .pagination {
+    text-align: center;
+  }
 </style>
