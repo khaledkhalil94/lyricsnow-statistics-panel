@@ -2,6 +2,9 @@ const mutations = {
   setCount(state, count){
     state.paginationCount = count
   },
+  setMsgsCount(state, count){
+    state.msgsCount = count
+  },
   changePaginationPage(state, page){
     state.paginationPage = page + 1
     state.displayOffset = page * state.displayCount
