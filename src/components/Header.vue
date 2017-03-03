@@ -8,7 +8,9 @@
     <a href='/' class="item">Lyrics Now</a>
     <router-link class="item" active-class='active' to="/" exact>Stats</router-link>
     <router-link class="item" active-class='active' to="/errors">Errors</router-link>
-    <router-link class="item" active-class='active' to="/msgs">Messages</router-link>
+    <router-link class="item" active-class='active' to="/msgs">Messages
+      <div v-if="messages > 0" class="floating ui red label">{{messages}}</div>
+    </router-link>
     <div v-if="this.$route.name !== 'msgs'" class="menu">
       <div class="item">
         <div class="ui icon input">
@@ -17,6 +19,7 @@
         </div>
       </div>
     </div>
+    <a class="item" v-if="this.$route.name === 'stats'" @click="getStats">Refresh</a>
     <div class="right menu" v-if="this.$route.name === 'err'">
       <div class="item">
         <div class="ui toggle checkbox">
@@ -47,9 +50,12 @@
         this.updateState()
       }
     },
-    computed: mapState({togg: state => state.enableDelete }),
+    computed: mapState({
+      togg: state => state.enableDelete,
+      messages: state => state.stats.msgsCount
+    }),
     methods: {
-      ...mapActions (['setLogout', 'updateState']),
+      ...mapActions (['setLogout', 'updateState', 'getStats']),
       logout (){
         this.setLogout()
         this.$router.push({'path': '/login'})
@@ -65,5 +71,8 @@
   #header_img {
     width: 22px;
     height: auto;
+  }
+  .floating.ui.red.label {
+    top: 0rem;
   }
 </style>
