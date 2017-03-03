@@ -16,42 +16,26 @@
         Other plays
       </div>
     </div>
-    <div class="ui horizontal statistic" style="float: right;">
+    <div class="ui horizontal mini red statistic" v-if="newPlays">
       <div class="value">
-        {{ messages }}
-      </div>
-      <div class="label">
-        Messages
+        {{ newPlays }}
       </div>
     </div>
-  </div>
+
 </template>
 
 <script>
-  import axios from 'axios'
-  import { HOST } from '../../utils/config'
+  import { mapActions, mapState } from 'vuex'
 
   export default {
-    data() {
-      return {
-        totalPlays: 0,
-        myPlays: 0,
-        messages: 0
-      }
-    },
     created: function () {
-      axios.get(HOST + '/controller/stats.php', {
-        params: {
-          action: 'stats'
-        }
-      }).then(res => {
-        let data = res.data
-        this.totalPlays = data.totalPlays
-        this.myPlays = data.myPlays
-        this.messages = data.messages
-      }).catch(res => {
-        console.log(res)
-      })
+      this.getStats()
     },
+    methods: mapActions (['getStats']),
+    computed: mapState({
+      newPlays: state => state.stats.newPlays,
+      totalPlays: state => state.stats.totalPlays,
+      myPlays: state => state.stats.myPlays
+    })
   }
 </script>

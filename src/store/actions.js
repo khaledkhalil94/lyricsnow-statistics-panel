@@ -23,6 +23,33 @@ const actions = {
       })
   },
 
+  getStats: ({commit, state}) => {
+    commit('setNewPlays', 0)
+    const URL = `${HOST}/controller/stats.php?action=stats`
+    const myRequest = new Request(URL)
+
+    fetch(myRequest)
+      .then(function(res) {
+          if(res.status == 200) return res.json();
+          else throw new Error('Something went wrong on api server!');
+      })
+      .then(function(data) {
+        const otherPlays = data.totalPlays - data.myPlays
+        const c_otherPlays = state.stats.totalPlays - state.stats.myPlays
+        const newPlays = otherPlays - c_otherPlays
+        const stats = {
+          totalPlays: data.totalPlays,
+          myPlays: data.myPlays,
+          msgsCount: data.messages
+        }
+        if(newPlays > 0 && c_otherPlays !== 0) commit('setNewPlays', newPlays)
+        commit('setStats', stats)
+      })
+      .catch(function(error) {
+          console.error(error)
+      })
+  },
+
   setRows: ({commit}, rows) => commit('setOriginalRows', rows),
   setLogout: ({commit}) => commit('logout'),
   updateState: ({commit}) => commit('updateState'),

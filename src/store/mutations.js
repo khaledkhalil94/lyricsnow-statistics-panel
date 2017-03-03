@@ -5,6 +5,12 @@ const mutations = {
   setMsgsCount(state, count){
     state.msgsCount = count
   },
+  setStats(state, stats){
+    state.stats = Object.assign({}, state.stats, stats)
+  },
+  setNewPlays(state, plays){
+    state.stats.newPlays = plays
+  },
   changePaginationPage(state, page){
     state.paginationPage = page + 1
     state.displayOffset = page * state.displayCount
