@@ -43,17 +43,7 @@
     },
     props: ['searchValue'],
     created: function () {
-      axios.get(HOST + '/controller/stats.php', {
-        params: {
-          action: 'errorsData'
-        }
-      }).then(res => {
-        let data = res.data
-        this.rows.push(...data)
-        this.setRows(data)
-      }).catch(res => {
-        console.log(res)
-      })
+      this.changePagPage(0)
     },
     computed: {
       ...mapState({
@@ -62,18 +52,12 @@
         enableDelete: state => state.enableDelete,
         displayOffset: state => state.displayOffset
       }),
-      getDisplayCount () {
-        return this.displayCount
-      },
-      getDisplayOffset () {
-        return this.displayOffset
-      },
       rowsDisplay () {
-        return this.rows.slice(this.getDisplayOffset, this.getDisplayCount+this.getDisplayOffset)
+        return this.originalRows.slice(this.getDisplayOffset, this.displayCount+this.displayOffset)
       }
     },
     methods: {
-      ...mapActions (['setCount', 'setRows', 'updateRows']),
+      ...mapActions (['setCount', 'setRows', 'updateRows', 'changePagPage']),
       removeItem(id){
         const URL = HOST + '/controller/delete.php'
         const body = JSON.stringify({
