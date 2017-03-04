@@ -11,7 +11,7 @@
     <router-link class="item" active-class='active' to="/msgs">Messages
       <div v-if="messages > 0" class="floating ui red label">{{messages}}</div>
     </router-link>
-    <div v-if="this.$route.name !== 'msgs'" class="menu">
+    <div v-if="this.$route.name === 'stats'" class="menu">
       <div class="item">
         <div class="ui icon input">
           <input type="text" v-model="value" placeholder="Search...">

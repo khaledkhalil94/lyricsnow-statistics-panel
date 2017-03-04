@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, i) in rowsDisplay">
+      <tr v-for="(row, i) in originalRows">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td><a :href="'http://www.last.fm/music/' + row.artist" v-html="row.artist">{{ row.artist }}</a></td>
@@ -26,38 +26,23 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import moment from 'moment'
   import { mapActions, mapState } from 'vuex'
-  import { sortDate, HOST, MakeDate } from '../../utils/'
+  import { HOST, MakeDate } from '../../utils/'
 
   export default {
     components: {
       MakeDate
     },
-    data () {
-      return {
-        rows: [],
-        moment
-      }
-    },
     props: ['searchValue'],
     created: function () {
       this.changePagPage(0)
     },
-    computed: {
-      ...mapState({
-        originalRows: state => state.originalRows,
-        displayCount: state => state.displayCount,
-        enableDelete: state => state.enableDelete,
-        displayOffset: state => state.displayOffset
-      }),
-      rowsDisplay () {
-        return this.originalRows.slice(this.getDisplayOffset, this.displayCount+this.displayOffset)
-      }
-    },
+    computed: mapState({
+      originalRows: state => state.data.originalRows,
+      enableDelete: state => state.enableDelete
+    }),
     methods: {
-      ...mapActions (['setCount', 'setRows', 'updateRows', 'changePagPage']),
+      ...mapActions (['updateRows', 'changePagPage', 'setOrder']),
       removeItem(id){
         const URL = HOST + '/controller/delete.php'
         const body = JSON.stringify({
@@ -71,33 +56,15 @@
 
         fetch(req)
           .then(res => res.json())
-          .then(res => {
-            if(res.status === true) {
-              this.rows = this.rows.filter(i => !(i.track === res.track && i.artist === res.artist))
-            }
-          })
+          .then(res => (res.status === true) ? this.updateRows({track: res.track, artist: res.artist}) : null)
           .catch(res => console.log(res))
       },
       sortBy (n, e) {
+        this.setOrder(e)
         const ths = [...document.getElementsByTagName('th')]
-        const isDsc = n.className.substring(7) === 'descending'
-        ths.forEach((e) => e.className = 'sort')
-        n.className = isDsc ? 'sorted ascending' : 'sorted descending'
-
-        if (e === 'date') sortDate(this.rows, e)
-        else if (e === 'count') this.rows.sort((a, b) => a.count - b.count).reverse()
-        else this.rows.sort((a, b) => a[e].toLowerCase() > b[e].toLowerCase() ? 1 : a[e].toLowerCase() < b[e].toLowerCase() ? -1 : 0)
-
-        if(isDsc) this.rows.reverse()
+        ths.forEach((e) => e.className = '')
+        n.className = (['date', 'count'].indexOf(e) === -1) ? 'sorted ascending' : 'sorted descending'
       },
-    },
-    watch: {
-      searchValue: function(a) {
-        this.rows = this.originalRows.filter(row => row.username.toLowerCase().indexOf(a.toLowerCase()) !== -1)
-      },
-      rows: function (x) {
-        this.setCount(Math.ceil(x.length/this.getDisplayCount))
-      }
     }
   }
 </script>

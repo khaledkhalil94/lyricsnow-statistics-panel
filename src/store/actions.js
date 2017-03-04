@@ -6,21 +6,22 @@ const actions = {
 
   changePagPage: ({commit, state}, page) => {
     commit('changePaginationPage', page)
-    const URL = `${HOST}/controller/stats.php?action=errorsData&limit=${state.displayCount}&offset=${state.displayOffset}`
-    const myRequest = new Request(URL)
+    requestData(state)
+      .then(res => {
+        commit('setRows', res.records)
+        commit('setCount', Math.ceil(res.count/state.data.displayCount))
+      })
+      .catch(res => console.log(res))
+  },
 
-    fetch(myRequest)
-      .then(function(res) {
-          if(res.status == 200) return res.json();
-          else throw new Error('Something went wrong on api server!');
+  setOrder: ({commit, state}, order) => {
+    commit('setOrder', order)
+    requestData(state)
+      .then(res => {
+        commit('setRows', res.records)
+        commit('setCount', Math.ceil(res.count/state.data.displayCount))
       })
-      .then(function(res) {
-        commit('setOriginalRows', res.records)
-        commit('setCount', Math.ceil(res.count/state.displayCount))
-      })
-      .catch(function(error) {
-          console.error(error)
-      })
+      .catch(res => console.log(res))
   },
 
   getStats: ({commit, state}) => {
@@ -49,16 +50,13 @@ const actions = {
           console.error(error)
       })
   },
-
-  setRows: ({commit}, rows) => commit('setOriginalRows', rows),
   setLogout: ({commit}) => commit('logout'),
   updateState: ({commit}) => commit('updateState'),
 
   updateRows: ({commit, state}, {artist, track}) => {
-    const newArr = state.originalRows.filter((item) => item.artist !== artist && item.track !== track)
-    console.log(newArr)
-    commit('updateRows', newArr)
-  },
+  const newArr = state.data.originalRows.filter(i => !(i.artist === artist && i.track === track))
+  commit('updateRows', newArr)
+},
 
   setLogin({commit}, form) {
     const URL = HOST + '/controller/login.php'
@@ -80,6 +78,27 @@ const actions = {
           console.error(error)
       })
   }
+}
+
+const requestData = (state) => {
+  const { displayCount, displayOffset, order } = state.data
+  return new Promise((resolve, reject) => {
+
+    const URL = `${HOST}/controller/stats.php?action=errorsData&limit=${displayCount}&offset=${displayOffset}&order=${order}`
+    const myRequest = new Request(URL)
+
+    fetch(myRequest)
+      .then(function(res) {
+          if(res.status == 200) return res.json();
+          else reject('Something went wrong on api server!');
+      })
+      .then(function(res) {
+        resolve(res)
+      })
+      .catch(function(error) {
+          reject(error)
+      })
+  })
 }
 
 export default actions
