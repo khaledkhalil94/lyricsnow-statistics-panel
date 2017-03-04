@@ -1,6 +1,9 @@
 const mutations = {
   setCount(state, count){
-    state.paginationCount = count
+    state.data.paginationCount = count
+  },
+  setOrder(state, order){
+    state.data.order = order
   },
   setMsgsCount(state, count){
     state.msgsCount = count
@@ -12,11 +15,11 @@ const mutations = {
     state.stats.newPlays = plays
   },
   changePaginationPage(state, page){
-    state.paginationPage = page + 1
-    state.displayOffset = page * state.displayCount
+    state.data.paginationPage = page + 1
+    state.data.displayOffset = page * state.data.displayCount
   },
-  setOriginalRows(state, rows){
-    state.originalRows = rows
+  setRows(state, rows){
+    state.data.originalRows = rows
   },
   setLogin(state, login){
     state.logged = login
@@ -29,7 +32,7 @@ const mutations = {
     state.errMsg = null
   },
   updateRows(state, newRows){
-    state.originalRows = newRows
+    state.data.originalRows = newRows
   },
   updateState(state){
     state.enableDelete = !state.enableDelete

@@ -23,8 +23,8 @@
 
   export default {
     computed: mapState({
-      pages: state => state.paginationCount,
-      currentPage: state => state.paginationPage
+      pages: state => state.data.paginationCount,
+      currentPage: state => state.data.paginationPage
     }),
     methods: {
       ...mapActions (['changePagPage']),

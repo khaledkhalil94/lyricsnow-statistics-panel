@@ -23,14 +23,13 @@
   import axios from 'axios'
   import { HOST } from '../../utils/config'
   import MakeDate from '../../utils/date'
-  import moment from 'moment'
 
   export default {
     components: {
       MakeDate
     },
     data () {
-      return { rows: [], moment }
+      return { rows: [] }
     },
     created: function () {
       axios.get(HOST + '/controller/stats.php', {
