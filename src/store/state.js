@@ -12,6 +12,8 @@ const state = {
     paginationPage: 1,
     displayOffset: 0,
     order: 'count'
+    order: 'count',
+    username: null
   },
   logged: false,
   errMsg: null,

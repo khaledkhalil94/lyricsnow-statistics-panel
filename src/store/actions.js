@@ -1,8 +1,8 @@
 import { HOST } from '../utils/config'
 
 const actions = {
-  setCount: ({commit}, count) => commit('setCount', count),
-  setMsgsCount: ({commit}, count) => commit('setMsgsCount', count),
+
+  setUsername: ({commit}, username) => commit('setUsername', username),
 
   changePagPage: ({commit, state}, page) => {
     commit('changePaginationPage', page)
@@ -82,9 +82,10 @@ const actions = {
 
 const requestData = (state) => {
   const { displayCount, displayOffset, order } = state.data
+  const { displayCount, displayOffset, order, username } = state.data
   return new Promise((resolve, reject) => {
 
-    const URL = `${HOST}/controller/stats.php?action=errorsData&limit=${displayCount}&offset=${displayOffset}&order=${order}`
+    const URL = `${HOST}/controller/stats.php?action=errorsData&limit=${displayCount}&offset=${displayOffset}&order=${order}&username=${username}`
     const myRequest = new Request(URL)
 
     fetch(myRequest)

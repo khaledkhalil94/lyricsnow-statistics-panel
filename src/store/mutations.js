@@ -5,6 +5,9 @@ const mutations = {
   setOrder(state, order){
     state.data.order = order
   },
+  setUsername(state, username){
+    state.data.username = username
+  },
   setMsgsCount(state, count){
     state.msgsCount = count
   },
