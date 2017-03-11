@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, i) in rowsDisplay">
+      <tr v-for="(row, i) in rowsDisplay" @click="activateRow">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td v-if="row.first_play !== '0000-00-00 00:00:00'"><MakeDate :date="row.first_play" /></td>
@@ -27,7 +27,6 @@
 
 <script>
   import axios from 'axios'
-  import moment from 'moment'
   import { sortDate, HOST, MakeDate } from '../../utils/'
 
   export default {
@@ -35,7 +34,11 @@
       MakeDate
     },
     data () {
-      return { rows: [], rowsDisplay: [], moment }
+      return {
+        rows: [],
+        rowsDisplay: [],
+        activeNode: null
+      }
     },
     created: function () {
       axios.get(HOST + '/controller/stats.php', {
@@ -52,6 +55,11 @@
     },
     props: ['searchValue'],
     methods: {
+      activateRow(x){
+        if(this.activeNode) this.activeNode.className = ''
+        x.target.parentNode.className = 'active'
+        this.activeNode = x.target.parentNode
+      },
       sortBy (n, e) {
         const ths = [...document.getElementsByTagName('th')]
         const isDsc = n.className.substring(7) === 'descending'

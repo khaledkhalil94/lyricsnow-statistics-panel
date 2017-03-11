@@ -6,13 +6,13 @@
         <th @click="(e) => sortBy(e.target, 'username')">Username</th>
         <th @click="(e) => sortBy(e.target, 'artist')">Artist</th>
         <th @click="(e) => sortBy(e.target, 'track')">Title</th>
-        <th @click="(e) => sortBy(e.target, 'date')">Date</th>
+        <th @click="(e) => sortBy(e.target, 'date')" id='date'>Date</th>
         <th @click="(e) => sortBy(e.target, 'count')">Count</th>
         <th class="collapsing" v-if="enableDelete"></th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, i) in originalRows">
+      <tr v-for="(row, i) in originalRows" @click="activateRow">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td><a :href="'http://www.last.fm/music/' + row.artist" v-html="row.artist">{{ row.artist }}</a></td>
@@ -33,6 +33,11 @@
     components: {
       MakeDate
     },
+    data (){
+      return {
+        activeNode: null
+      }
+    },
     props: ['searchValue'],
     created: function () {
       this.changePagPage(0)
@@ -43,6 +48,11 @@
     }),
     methods: {
       ...mapActions (['updateRows', 'changePagPage', 'setOrder']),
+      activateRow(x){
+        if(this.activeNode) this.activeNode.className = ''
+        x.target.parentNode.className = 'active'
+        this.activeNode = x.target.parentNode
+      },
       removeItem(id){
         const URL = HOST + '/controller/delete.php'
         const body = JSON.stringify({
