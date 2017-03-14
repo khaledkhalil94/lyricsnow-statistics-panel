@@ -1,6 +1,6 @@
 <template lang="html">
   <span class="relateive-date" :title="date">
-    {{ makeDate(date) }}
+    {{ now }}
   </span>
 </template>
 
@@ -12,12 +12,18 @@ export default {
   props: ['date'],
   data (){
     return {
-      moment
+      moment, now: null
     }
   },
+  created: function () {
+    this.renderDate()
+    setInterval(() => {
+      this.renderDate()
+    }, 3000)
+  },
   methods: {
-    makeDate (x){
-      return moment(x).fromNow()
+    renderDate () {
+      this.now = moment(this.date).fromNow()
     }
   }
 }
