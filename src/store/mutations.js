@@ -5,6 +5,9 @@ const mutations = {
   setOrder(state, order){
     state.data.order = order
   },
+  setReqCalled(state, b){
+    state.statsReqCalled = b
+  },
   setUsername(state, username){
     state.data.username = username
   },
@@ -15,7 +18,13 @@ const mutations = {
     state.stats = Object.assign({}, state.stats, stats)
   },
   setNewPlays(state, plays){
-    state.stats.newPlays = plays
+    state.stats.newPlays += plays
+  },
+  setStatsData(state, rows){
+    state.stats.data.rows = rows
+  },
+  newPlaysIncr(state, obj){
+    state.stats.data.newPlays.push(obj)
   },
   changePaginationPage(state, page){
     state.data.paginationPage = page + 1
@@ -36,6 +45,9 @@ const mutations = {
   },
   updateRows(state, newRows){
     state.data.originalRows = newRows
+  },
+  setIntervalTime(state, time){
+    state.request.intervalTime = parseInt(time)
   },
   updateState(state){
     state.enableDelete = !state.enableDelete

@@ -8,14 +8,6 @@
         Total plays
       </div>
     </div>
-    <div class="ui horizontal statistic">
-      <div class="value">
-        {{ totalPlays - myPlays }}
-      </div>
-      <div class="label">
-        Other plays
-      </div>
-    </div>
     <div class="ui horizontal mini red statistic" v-if="newPlays">
       <div class="value">
         {{ newPlays }}
@@ -34,8 +26,7 @@
     methods: mapActions (['getStats']),
     computed: mapState({
       newPlays: state => state.stats.newPlays,
-      totalPlays: state => state.stats.totalPlays,
-      myPlays: state => state.stats.myPlays
+      totalPlays: state => state.stats.totalPlays
     })
   }
 </script>

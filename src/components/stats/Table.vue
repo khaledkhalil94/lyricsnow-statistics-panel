@@ -4,14 +4,14 @@
       <tr>
         <th>#</th>
         <th @click="(e) => sortBy(e.target, 'username')">Username</th>
-        <th @click="(e) => sortBy(e.target, 'first_play')">First Play</th>
+        <th @click="(e) => sortBy(e.target, 'first_play')" id="first_play">First Play</th>
         <th @click="(e) => sortBy(e.target, 'last_play')" id="last_play">Last Play</th>
         <th @click="(e) => sortBy(e.target, 'count')">Plays</th>
         <th @click="(e) => sortBy(e.target, 'nf_count')">Not Found</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, i) in rowsDisplay" @click="activateRow">
+      <tr v-for="(row, i) in rowsDisplay" @click="activateRow" :id="row.id">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
         <td v-if="row.first_play !== '0000-00-00 00:00:00'"><MakeDate :date="row.first_play" /></td>
@@ -26,8 +26,8 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import { sortDate, HOST, MakeDate } from '../../utils/'
+  import { mapActions, mapState } from 'vuex'
 
   export default {
     components: {
@@ -35,29 +35,22 @@
     },
     data () {
       return {
-        rows: [],
         rowsDisplay: [],
         activeNode: null
       }
     },
     created: function () {
-      axios.get(HOST + '/controller/stats.php', {
-        params: {
-          action: 'tableData'
-        }
-      }).then(res => {
-        let data = res.data
-        this.rows.push(...data)
-        document.getElementById('last_play').click()
-      }).catch(res => {
-        console.log(res)
-      })
+      this.getStatsData()
     },
     props: ['searchValue'],
+    computed: mapState({
+      rows: state => state.stats.data.rows
+    }),
     methods: {
+      ...mapActions(['getStatsData']),
       activateRow(x){
         if(this.activeNode) this.activeNode.className = ''
-        x.target.parentNode.className = 'active'
+        x.target.closest('tr').className = 'active'
         this.activeNode = x.target.parentNode
       },
       sortBy (n, e) {
@@ -88,3 +81,9 @@
     }
   }
 </script>
+
+<style media="screen">
+  .ui.table tr.positive {
+    background-color: #e7ffd1!important;
+  }
+</style>

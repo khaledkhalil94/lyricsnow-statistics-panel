@@ -3,7 +3,10 @@ const state = {
     msgsCount: 0,
     newPlays: 0,
     totalPlays: 0,
-    myPlays: 0
+    data: {
+      newPlays: [],
+      rows: []
+    }
   },
   data: {
     originalRows: [],
@@ -11,13 +14,16 @@ const state = {
     displayCount: 15,
     paginationPage: 1,
     displayOffset: 0,
-    order: 'count'
     order: 'count',
     username: null
   },
+  request: {
+    statsReqCalled: false,
+    intervalTime: 5
+  },
   logged: false,
   errMsg: null,
-  enableDelete: false
+  enableDelete: false,
 }
 
 export default state
