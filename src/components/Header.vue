@@ -27,8 +27,8 @@
         </div>
       </div>
     </div>
-    <!-- Refresh Button -->
-    <a class="item" v-if="this.$route.name === 'stats'" @click="getStats">Refresh</a>
+    <!-- Interval time slider -->
+    <Range v-if="this.$route.name === 'stats'" />
     <!-- Delete Button -->
     <div class="right menu" v-if="this.$route.name === 'err'">
       <div class="item">
@@ -45,13 +45,17 @@
 
 <script>
   import { mapActions, mapState } from 'vuex'
+  import Range from './range'
 
   export default {
     name: 'header',
+    components: {
+      Range
+    },
     data () {
       return { value: '', toggle: this.togg }
     },
-    props: ['val', 'search'],
+    props: ['val'],
     watch: {
       value: function (a) {
         this.val(a)
@@ -62,10 +66,10 @@
     },
     computed: mapState({
       togg: state => state.enableDelete,
-      messages: state => state.stats.msgsCount
+      messages: state => state.stats.msgsCount,
     }),
     methods: {
-      ...mapActions (['setLogout', 'updateState', 'getStats', 'setUsername','changePagPage']),
+      ...mapActions (['setLogout', 'updateState', 'setUsername','changePagPage']),
       logout (){
         this.setLogout()
         this.$router.push({'path': '/login'})
