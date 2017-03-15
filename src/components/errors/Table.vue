@@ -15,7 +15,7 @@
       <tr v-for="(row, i) in originalRows" @click="activateRow">
         <td class='collapsing'>{{ i+1 }}</td>
         <td><a :href="'http://www.last.fm/user/' + row.username">{{ row.username }}</a></td>
-        <td><a :href="'http://www.last.fm/music/' + row.artist" v-html="row.artist">{{ row.artist }}</a></td>
+        <td><a :href="artistLink(row.artist)" v-html="row.artist"></a></td>
         <td v-html="row.track"></td>
         <td><MakeDate :date="row.date" /></td>
         <td>{{ row.count }}</td>
@@ -50,7 +50,7 @@
       ...mapActions (['updateRows', 'changePagPage', 'setOrder']),
       activateRow(x){
         if(this.activeNode) this.activeNode.className = ''
-        x.target.parentNode.className = 'active'
+        x.target.closest('tr').className = 'active'
         this.activeNode = x.target.parentNode
       },
       removeItem(id){
@@ -75,6 +75,10 @@
         ths.forEach((e) => e.className = '')
         n.className = (['date', 'count'].indexOf(e) === -1) ? 'sorted ascending' : 'sorted descending'
       },
+      artistLink(x) {
+        const artist = x.replace('_', '+')
+        return `http://www.last.fm/music/${artist}`
+      }
     }
   }
 </script>
