@@ -4,6 +4,7 @@ import _ from 'lodash'
 const actions = {
 
   setUsername: ({commit}, username) => commit('setUsername', username),
+  setConnectionStatus: ({commit}, status) => commit('setConnectionStatus', status),
   setReqCalled: ({commit}, b) => commit('setReqCalled', b),
   changePagPage: ({commit, state}, page) => {
     commit('changePaginationPage', page)
@@ -40,6 +41,7 @@ const actions = {
     const URL = `${HOST}/controller/stats.php?action=stats&cp=${currentPlays}&delay=${state.request.intervalTime}`
     const myRequest = new Request(URL)
     commit('setReqCalled', true)
+    commit('setConnectionStatus', true)
     fetch(myRequest)
       .then(function(res) {
         if(res.status == 200) return res.json();
@@ -66,6 +68,7 @@ const actions = {
       })
       .catch(function(error) {
           console.error(error)
+          commit('setConnectionStatus', false)
       })
   },
   setLogout: ({commit}) => commit('logout'),

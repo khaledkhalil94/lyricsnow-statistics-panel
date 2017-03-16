@@ -1,9 +1,11 @@
 const state = {
   stats: {
     msgsCount: 0,
+    donations: 0,
     newPlays: 0,
     totalPlays: 0,
     data: {
+      connectionStatus: false,
       newPlays: [],
       rows: []
     }

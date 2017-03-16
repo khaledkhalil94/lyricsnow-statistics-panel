@@ -29,6 +29,7 @@
     </div>
     <!-- Interval time slider -->
     <Range v-if="this.$route.name === 'stats'" />
+    <Status />
     <!-- Delete Button -->
     <div class="right menu" v-if="this.$route.name === 'err'">
       <div class="item">
@@ -45,12 +46,13 @@
 
 <script>
   import { mapActions, mapState } from 'vuex'
-  import Range from './range'
+  import Range from './common/range'
+  import Status from './common/conStatus'
 
   export default {
     name: 'header',
     components: {
-      Range
+      Range, Status
     },
     data () {
       return { value: '', toggle: this.togg }
@@ -67,6 +69,7 @@
     computed: mapState({
       togg: state => state.enableDelete,
       messages: state => state.stats.msgsCount,
+      donations: state => state.stats.donations
     }),
     methods: {
       ...mapActions (['setLogout', 'updateState', 'setUsername','changePagPage']),

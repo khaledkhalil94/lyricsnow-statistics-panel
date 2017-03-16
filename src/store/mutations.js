@@ -11,6 +11,9 @@ const mutations = {
   setUsername(state, username){
     state.data.username = username
   },
+  setConnectionStatus(state, status){
+    state.stats.data.connectionStatus = status
+  },
   setMsgsCount(state, count){
     state.msgsCount = count
   },
