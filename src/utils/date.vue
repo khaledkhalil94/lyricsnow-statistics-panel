@@ -9,7 +9,7 @@ import moment from 'moment'
 
 export default {
   name: 'MakeDate',
-  props: ['date'],
+  props: ['date', 'suffix'],
   data (){
     return {
       moment, now: null
@@ -19,11 +19,11 @@ export default {
     this.renderDate()
     setInterval(() => {
       this.renderDate()
-    }, 3000)
+    }, 1000)
   },
   methods: {
     renderDate () {
-      this.now = moment(this.date).fromNow()
+      this.now = moment(this.date).fromNow(this.suffix)
     }
   }
 }
