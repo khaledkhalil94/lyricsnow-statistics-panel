@@ -11,8 +11,9 @@ const mutations = {
   setUsername(state, username){
     state.data.username = username
   },
-  setConnectionStatus(state, status){
-    state.stats.data.connectionStatus = status
+  setConnectionStatus(state, data){
+    state.stats.data.connection.connectionStatus = data.status
+    if(!state.stats.data.connection.upTime) state.stats.data.connection.upTime = data.upTime
   },
   setMsgsCount(state, count){
     state.msgsCount = count

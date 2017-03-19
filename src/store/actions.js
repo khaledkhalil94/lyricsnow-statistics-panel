@@ -41,16 +41,17 @@ const actions = {
     const URL = `${HOST}/controller/stats.php?action=stats&cp=${currentPlays}&delay=${state.request.intervalTime}`
     const myRequest = new Request(URL)
     commit('setReqCalled', true)
-    commit('setConnectionStatus', true)
+    commit('setConnectionStatus', {status: true, upTime: +new Date()})
     fetch(myRequest)
       .then(function(res) {
         if(res.status == 200) return res.json();
         else throw new Error('Something went wrong on api server!');
       })
       .then(function(data) {
-        if(data.status == 'rec') {
+        commit('setReqCalled', false)
+        if(data.status === 'rec') {
+          commit('setConnectionStatus', {status: false})
           console.info('Timeout has been reached. Re-sending request..')
-          commit('setReqCalled', false)
           dispatch('getStats')
         } else {
           const newPlays = data.totalPlays - state.stats.totalPlays
@@ -61,14 +62,18 @@ const actions = {
           }
           if(newPlays > 0 && state.stats.totalPlays !== 0) commit('setNewPlays', newPlays)
           commit('setStats', stats)
-          commit('setReqCalled', false)
           dispatch('getStats')
           dispatch('getStatsData')
         }
       })
       .catch(function(error) {
           console.error(error)
-          commit('setConnectionStatus', false)
+          console.info('Reconnecting in 3 seconds..')
+          commit('setConnectionStatus', {status: false})
+          commit('setReqCalled', false)
+          setTimeout(() => {
+            dispatch('getStats')
+          }, 3000)
       })
   },
   setLogout: ({commit}) => commit('logout'),

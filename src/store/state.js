@@ -5,7 +5,10 @@ const state = {
     newPlays: 0,
     totalPlays: 0,
     data: {
-      connectionStatus: false,
+      connection: {
+        connectionStatus: false,
+        upTime: null
+      },
       newPlays: [],
       rows: []
     }

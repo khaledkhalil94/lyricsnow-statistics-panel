@@ -30,6 +30,7 @@
     <!-- Interval time slider -->
     <Range v-if="this.$route.name === 'stats'" />
     <Status />
+    <Uptime />
     <!-- Delete Button -->
     <div class="right menu" v-if="this.$route.name === 'err'">
       <div class="item">
@@ -48,11 +49,12 @@
   import { mapActions, mapState } from 'vuex'
   import Range from './common/range'
   import Status from './common/conStatus'
+  import Uptime from './common/upTime'
 
   export default {
     name: 'header',
     components: {
-      Range, Status
+      Range, Status, Uptime
     },
     data () {
       return { value: '', toggle: this.togg }
